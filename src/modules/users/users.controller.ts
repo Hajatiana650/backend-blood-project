@@ -33,7 +33,6 @@ export class UsersController {
     description:
       'Création d’un utilisateur avec rôle admin, labo ou donor',
   })
-
   @ApiBody({
     type: CreateUserDto,
     examples: {
@@ -74,7 +73,6 @@ export class UsersController {
       },
     },
   })
-
   @ApiResponse({
     status: 201,
     description: 'Utilisateur créé avec succès',
@@ -90,7 +88,6 @@ export class UsersController {
       },
     },
   })
-
   @ApiResponse({
     status: 400,
     description: 'Validation échouée',
@@ -106,7 +103,6 @@ export class UsersController {
       },
     },
   })
-
   @ApiResponse({
     status: 409,
     description: 'Email déjà utilisé',
@@ -119,7 +115,6 @@ export class UsersController {
       },
     },
   })
-
   async createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }

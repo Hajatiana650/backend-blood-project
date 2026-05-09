@@ -34,6 +34,20 @@ enum NotificationStatus {
   not_read
 }
 
+enum BloodType {
+  A_POS
+  A_NEG
+
+  B_POS
+  B_NEG
+
+  AB_POS
+  AB_NEG
+
+  O_POS
+  O_NEG
+}
+
 // =========================
 // MODELS
 // =========================
@@ -156,7 +170,7 @@ model Notification {
 
 model BloodGroup {
   id_blood    Int      @id @default(autoincrement())
-  type_blood  String   @unique
+  type_blood  BloodType @unique
 
   donors      Donor[]
   stocks      Stock[]
