@@ -1,0 +1,129 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  labo
+  admin
+  donor
+}
+
+enum StatusNotification {
+  send
+  not_read
+}
+
+enum StatusStock {
+  normal
+  low
+  urgence
+}
+
+model BloodGroup {
+  id_blood   Int     @id @default(autoincrement())
+  type_blood String  @unique
+
+  donors     Donor[]
+  stocks     Stock[]
+  outputs    BloodOutput[]
+}
+
+model User {
+  id_user      Int      @id @default(autoincrement())
+  name         String
+  firstname    String
+  email        String   @unique
+  password     String
+  role         Role     @default(donor)
+  phone_number String?
+
+  donor        Donor?
+}
+
+model Donor {
+  id_donor      Int       @id @default(autoincrement())
+  address       String?
+  job           String?
+  birth_date    DateTime
+  availability  Boolean   @default(true)
+  photo         String?
+  CIN           String    @unique
+  isApte        Boolean   @default(false)
+  weight        Float?
+
+  user          User      @relation(fields: [id_user], references: [id_user])
+  id_user       Int       @unique
+
+  blood_group   BloodGroup? @relation(fields: [id_blood], references: [id_blood])
+  id_blood      Int?
+
+  donations     Donation[]
+  analyses      Analysis[]
+  notifications Notification[]
+}
+
+model Analysis {
+  id_analysis   Int       @id @default(autoincrement())
+  analysis_date DateTime
+  result        String?
+  attachment    String?
+  observation   String?
+  weight        Float?
+  tension       String?
+
+  donor         Donor     @relation(fields: [id_donor], references: [id_donor])
+  id_donor      Int
+}
+
+model Donation {
+  id_donation   Int       @id @default(autoincrement())
+  donation_date DateTime
+  bags_qty      Int
+
+  donor         Donor     @relation(fields: [id_donor], references: [id_donor])
+  id_donor      Int
+}
+
+model Stock {
+  id_stock      Int         @id @default(autoincrement())
+  bags          Int
+  status_stock  StatusStock @default(normal)
+
+  blood_group   BloodGroup  @relation(fields: [id_blood], references: [id_blood])
+  id_blood      Int
+}
+
+model BloodOutput {
+  id_output   Int       @id @default(autoincrement())
+  output_date DateTime
+  qty         Int
+  reason      String?
+
+  blood_group BloodGroup @relation(fields: [id_blood], references: [id_blood])
+  id_blood    Int
+}
+
+model Campaign {
+  id_campaign Int      @id @default(autoincrement())
+  title       String
+  description String?
+  start_date  DateTime
+  end_date    DateTime
+}
+
+model Notification {
+  id_notification    Int                @id @default(autoincrement())
+  message            String
+  status_notification StatusNotification @default(not_read)
+  date_notification  DateTime           @default(now())
+
+  donor              Donor              @relation(fields: [id_donor], references: [id_donor])
+  id_donor           Int
+}
