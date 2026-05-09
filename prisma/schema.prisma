@@ -1,0 +1,166 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =========================
+// ENUMS
+// =========================
+
+enum Role {
+  labo
+  admin
+  donor
+}
+
+enum StockStatus {
+  normal
+  low
+  urgence
+}
+
+enum NotificationStatus {
+  send
+  not_read
+}
+
+// =========================
+// MODELS
+// =========================
+
+model User {
+  id_user      Int      @id @default(autoincrement())
+  name         String
+  firstname    String
+  email        String   @unique
+  password     String
+  role         Role
+  phone_number String
+
+  donor Donor?
+
+  @@map("users")
+}
+
+model Donor {
+  id_donor     Int       @id @default(autoincrement())
+  address      String
+  job          String
+  birth_date   DateTime
+  availability Boolean
+  photo        String?
+  CIN          String    @unique
+  isApte       Boolean
+  weight       Float
+
+  id_user      Int       @unique
+  id_blood     Int
+
+  user         User       @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+  bloodGroup   BloodGroup @relation(fields: [id_blood], references: [id_blood])
+
+  analyses     Analysis[]
+  donations    Donation[]
+  notifications Notification[]
+
+  @@map("donors")
+}
+
+model Analysis {
+  id_analysis   Int      @id @default(autoincrement())
+  analysis_date DateTime
+  result        String
+  attachement   String?
+  observation   String?
+  weight        Float
+  tension       String
+
+  id_donor      Int
+
+  donor         Donor @relation(fields: [id_donor], references: [id_donor], onDelete: Cascade)
+
+  @@map("analyses")
+}
+
+model Stock {
+  id_stock      Int         @id @default(autoincrement())
+  bags          Int
+  status_stock  StockStatus
+
+  id_blood      Int
+
+  bloodGroup    BloodGroup @relation(fields: [id_blood], references: [id_blood])
+
+  @@map("stocks")
+}
+
+model Donation {
+  id_donation   Int      @id @default(autoincrement())
+  bags_qty      Int
+  donation_date DateTime
+
+  id_donor      Int
+
+  donor         Donor @relation(fields: [id_donor], references: [id_donor], onDelete: Cascade)
+
+  @@map("donations")
+}
+
+model BloodOutput {
+  id_output     Int      @id @default(autoincrement())
+  output_date   DateTime
+  qty           Int
+  reason        String
+
+  id_blood      Int
+
+  bloodGroup    BloodGroup @relation(fields: [id_blood], references: [id_blood])
+
+  @@map("blood_outputs")
+}
+
+model Campaign {
+  id_campaign Int      @id @default(autoincrement())
+  title       String
+  description String
+  start_date  DateTime
+  end_date    DateTime
+  time        String
+  place       String
+
+  @@map("campaigns")
+}
+
+model Notification {
+  id_notification    Int                 @id @default(autoincrement())
+  message            String
+  status_notification NotificationStatus
+  date_notification  DateTime
+
+  id_donor           Int
+
+  donor              Donor @relation(fields: [id_donor], references: [id_donor], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model BloodGroup {
+  id_blood    Int      @id @default(autoincrement())
+  type_blood  String   @unique
+
+  donors      Donor[]
+  stocks      Stock[]
+  outputs     BloodOutput[]
+
+  @@map("blood_groups")
+}
