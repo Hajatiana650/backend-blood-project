@@ -5,6 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { DonorModule } from './donor/donor.module';
 import { SearchModule } from './search/search.module';
 import { ChatbotModule } from './chatbot/chatbot.module';
+import { StockModule } from './stock/stock.module';
+import { CampaignModule } from './campaign/campaign.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { ChatbotModule } from './chatbot/chatbot.module';
     DonorModule,
     SearchModule,
     ChatbotModule,
+    StockModule,
+    CampaignModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}
