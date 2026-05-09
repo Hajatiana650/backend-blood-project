@@ -1,11 +1,24 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional } from 'class-validator';
-import { CreateDonorDto } from './create-donor.dto';
+import { IsOptional, IsString, IsBoolean, IsNumber, IsInt } from 'class-validator';
 
-export class UpdateDonorDto extends PartialType(CreateDonorDto) {
-	@ApiPropertyOptional({ example: false })
-	@IsOptional()
-	@IsBoolean()
-	isApte?: boolean;
+export class UpdateDonorDto {
+  @IsOptional() @IsString()
+  address?: string;
+
+  @IsOptional() @IsString()
+  job?: string;
+
+  @IsOptional() @IsBoolean()
+  availability?: boolean;
+
+  @IsOptional() @IsString()
+  photo?: string;
+
+  @IsOptional() @IsBoolean()
+  isApte?: boolean;
+
+  @IsOptional() @IsNumber()
+  weight?: number;
+
+  @IsOptional() @IsInt()
+  id_blood?: number;
 }

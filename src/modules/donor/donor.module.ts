@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
+import { DonorService } from './donor.service';
 import { DonorController } from './donor.controller';
-import { DonorService } from './donor.sercice';
-import { PrismaService } from 'src/prisma.service';
 
 @Module({
-	controllers: [DonorController],
-	providers: [DonorService, PrismaService],
-	exports: [DonorService],
+  providers: [DonorService],
+  controllers: [DonorController],
 })
 export class DonorModule {}
