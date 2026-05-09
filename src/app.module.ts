@@ -4,14 +4,14 @@ import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
 import { DonorModule } from './modules/donor/donor.module';
 import { BloodGroupModule } from './modules/blood-group/blood-group.module';
-import { DashLabModule } from './modules/dash-lab/dash-lab.module';
+import { AnalysisModule } from './analysis/analysis.module';
 
 @Module({
   imports: [
     UsersModule,
     DonorModule,
     BloodGroupModule,
-    DashLabModule,
+    AnalysisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

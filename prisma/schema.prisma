@@ -48,6 +48,11 @@ enum BloodType {
   O_NEG
 }
 
+enum resultType {
+  valid
+  invalid
+}
+
 // =========================
 // MODELS
 // =========================
@@ -93,7 +98,7 @@ model Donor {
 model Analysis {
   id_analysis   Int      @id @default(autoincrement())
   analysis_date DateTime
-  result        String
+  result        resultType
   attachement   String?
   observation   String?
   weight        Float
