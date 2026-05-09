@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
 import { DonorModule } from './modules/donor/donor.module';
 import { BloodGroupModule } from './modules/blood-group/blood-group.module';
-import { AnalysisModule } from './analysis/analysis.module';
+import { AnalysisModule } from './modules/analysis/analysis.module';
 
 @Module({
   imports: [
